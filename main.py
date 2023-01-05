@@ -6,6 +6,7 @@ import PDF as pd
 import util as u 
 import stippling as st
 import cv2 as cv2
+
 inPath = 'data/images/colosseo.jpeg'
 nPoints = 500
 threshold = 200
@@ -34,7 +35,6 @@ def main():
     print('Next step: stippling...')
     print('Stippling in progress... please be patient')
     stipples, densities = st.Centroids(points, pdf, gray.shape, step)
-    print(stipples)
     for i in range(1, iterations):
        print('Iteration', i)
        stipples, densities = st.Centroids(stipples, pdf, gray.shape, step)
@@ -44,11 +44,11 @@ def main():
     radiuses = u.rescaleFloat64s(densities, rMin, rMax)
     print('Densities normalized!')
     print('Next step: drawing stippled image...')
-    cv2.imread(stippled)
+    stipple = cv2.imread(stippled)
     print('Drawing stippled image in progress...')
-    for i, s in enumerate(stipples):
-        cv2.circle(stippled, int(s[0]), int(s[1]), radiuses[i], (0, 0, 0), -1)
-    cv2.imwrite(stippled, stippled)
+    for j, s in enumerate(stipples):
+        stipple = cv2.circle(stipple, (int(s.x), int(s.y)), int(radiuses[j]), (0, 0, 0), -1)
+    cv2.imwrite(stippled, stipple)
     print('Stippled image drawn!')
     print('MAIN COMPLETED!')
 
