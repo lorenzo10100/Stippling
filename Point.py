@@ -20,3 +20,8 @@ def sortByX(array):
 def sortByY(array):
     return sorted(array, key=lambda point: point.y)
 
+
+if __name__ == "__main__":
+    points = [Point(1, 0), Point(6, 2), Point(9, 3), Point(3,24), Point(0, 5)]
+    print(sortByX(points))
+    print(sortByY(points))

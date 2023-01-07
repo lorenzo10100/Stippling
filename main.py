@@ -7,11 +7,11 @@ import util as u
 import stippling as st
 import cv2 as cv2
 
-inPath = 'data/images/colosseo.jpeg'
-nPoints = 500
+inPath = 'data/images/seal.jpeg'
+nPoints = 1000
 threshold = 200
 resolution = 1
-iterations = 10 
+iterations = 5
 rMin = 1
 rMax = 1
 

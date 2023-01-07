@@ -11,8 +11,8 @@ def Centroids(sites, pd, bounds, step):
         siteCentroids[site] = Point(0, 0)
     box = Rectangle(Point(np.float64(0),np.float64(0)), Point(np.float64(bounds[0]), np.float64(bounds[1])))
     kd = makeKDTree(sites, box)
-    x = np.arange(0, bounds[0], step)
-    y = np.arange(0, bounds[1], step)
+    x = np.arange(box.min.x, box.max.x, step)
+    y = np.arange(box.min.y, box.max.y, step)
     for i in np.nditer(x):
         for j in np.nditer(y):
             p = Point(i, j)
