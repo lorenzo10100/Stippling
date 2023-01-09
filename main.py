@@ -8,7 +8,7 @@ import stippling as st
 import cv2 as cv2
 
 inPath = 'data/images/seal.jpeg'
-nPoints = 1000
+nPoints = 3000
 threshold = 200
 resolution = 1
 iterations = 5
