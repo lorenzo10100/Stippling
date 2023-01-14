@@ -1,6 +1,5 @@
 import numpy as np 
-from Point import Point, sortByX, sortByY
-
+from Point2 import Point, sortByX, sortByY
 class Rectangle:
     def __init__(self, min: Point, max: Point):
         self.min = min

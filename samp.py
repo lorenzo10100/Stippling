@@ -1,9 +1,9 @@
 import numpy as np 
-from Point2 import Point
+from Point import Point
 import cv2 as cv
 
 def sampling(sample, gray, threshold, rng=np.random.default_rng()):
-    pts = [Point(0,0) for _ in range(sample)]
+    pts = np.zeros([sample], dtype=(np.float64, 2))
     bounds = gray.shape
     hist = dict()
     roulette = np.zeros(threshold+1)
@@ -24,7 +24,5 @@ def sampling(sample, gray, threshold, rng=np.random.default_rng()):
         p = hist[bucket][rng.integers(0, len(hist[bucket]))]
         p.x += rng.random(dtype=np.float64)
         p.y += rng.random(dtype=np.float64)
-        pts[i] = p
-    return pts      
-
-
+        pts[i] = (p.x, p.y)
+    return pts

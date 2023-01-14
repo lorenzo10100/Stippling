@@ -1,14 +1,14 @@
-import sampling as sp 
+import samp as sp 
 import numpy as np
 import gray as gr
 import time 
 import PDF as pd
 import util as u 
-import stippling as st
+import stip as st
 import cv2 as cv2
 
 inPath = 'data/images/seal.jpeg'
-nPoints = 1000
+nPoints = 100000
 threshold = 200
 resolution = 1
 iterations = 5
@@ -47,7 +47,7 @@ def main():
     stipple = cv2.imread(stippled)
     print('Drawing stippled image in progress...')
     for j, s in enumerate(stipples):
-        stipple = cv2.circle(stipple, (int(s.x), int(s.y)), int(radiuses[j]), (0, 0, 0), -1)
+        stipple = cv2.circle(stipple, (np.int64(s[0]), np.int64(s[1])), int(radiuses[j]), (0, 0, 0), -1)
     cv2.imwrite(stippled, stipple)
     print('Stippled image drawn!')
     print('MAIN COMPLETED!')

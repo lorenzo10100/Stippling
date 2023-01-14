@@ -1,4 +1,4 @@
-from Point import Point
+from Point2 import Point
 import numpy as np
 from KDTree import *
 import PDF as pd
@@ -34,6 +34,9 @@ def Centroids(sites, pd, bounds, step):
     centroids = [Point(0, 0) for _ in range(len(sites))]
     densities = [np.float64(0) for _ in range(len(sites))]
     i = 0
+    print(len(siteIntensities))
+    print(len(siteCentroids))
+    print(len(sitePoints))
     for site, density in siteIntensities.items():
         centroid = siteCentroids[site]
         centroid.x /= density
@@ -41,4 +44,6 @@ def Centroids(sites, pd, bounds, step):
         centroids[i] = centroid
         densities[i] = siteIntensities[site] / sitePoints[site]
         i += 1
+    print(centroids)
+    print(densities)
     return centroids, densities

@@ -11,18 +11,18 @@ class Point:
     def __repr__(self):
         return self.__str__()
     
-
-    def __lt__(self, other):
-        return self.x < other.x
+    def getDistance(self, other):
+        return np.sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
 
 def sortByX(array):
-    return np.sort(array, axis=0)
+    return sorted(array, key=lambda point: point.x)
     
 def sortByY(array):
-    return np.sort(array, axis=1)
+    return sorted(array, key=lambda point: point.y)
 
 
 if __name__ == "__main__":
-    points = np.array([[4,9], [9,2], [8,3], [7,9], [10,5]])
+    points = [Point(1, 0), Point(6, 2), Point(9, 3), Point(3,24), Point(0, 5)]
+    print(points[0].getDistance(other=points[1]))
     print(sortByX(points))
     print(sortByY(points))
