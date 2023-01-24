@@ -1,5 +1,5 @@
 import numpy as np 
-from Point2 import Point
+from Point import Point
 import cv2 as cv
 
 def sampling(sample, gray, threshold, rng=np.random.default_rng()):
@@ -17,7 +17,10 @@ def sampling(sample, gray, threshold, rng=np.random.default_rng()):
                     hist[intensity] = [Point(np.float64(x),np.float64(y))]
     roulette[0] = 256*len(hist[0])
     for i in range(1, len(roulette)):
-        roulette[i] = roulette[i-1] + (256-i)*len(hist[np.uint8(i)])
+        try:
+            roulette[i] = roulette[i-1] + (256-i)*len(hist[np.uint8(i)])
+        except:
+            roulette[i] = roulette[i -1]
     for i in range(len(pts)):
         ball = rng.integers(0, len(roulette)-1)
         bucket = np.uint8(np.searchsorted(roulette, ball))

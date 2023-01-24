@@ -1,7 +1,6 @@
-
 from Point import Point
 import numpy as np
-from scipy.spatial import *
+from KDTree2 import *
 import PDF as pd
 
 
@@ -12,27 +11,26 @@ def Centroids(sites, pd, bounds, step):
     for _, site in enumerate(sites):
         site = site[0], site[1]
         siteCentroids[site] = Point(0, 0)
-    kd = cKDTree(sites)
-    x, y = np.meshgrid(np.arange(0, bounds[0], step), np.arange(0, bounds[1], step))
-    points = np.c_[(y.ravel(), x.ravel())]
-    for p in points:
-        x, y = p[0], p[1]
-        _, index = kd.query([[x, y]], p=2)
-        index = index[0]
-        nearest = sites[index][0], sites[index][1]
-        weight = pd[int(x)][int(y)]
-        centroid = siteCentroids[nearest]
-        centroid.x += weight * x
-        centroid.y += weight * y
-        siteCentroids[nearest] = centroid
-        if nearest in siteIntensities:
-            siteIntensities[nearest] += weight
-        else:
-            siteIntensities[nearest] = weight
-        if nearest in sitePoints:
-            sitePoints[nearest] += 1
-        else:
-            sitePoints[nearest] = 1
+    kd = KDTree(sites)
+    x, y = np.arange(0, bounds[0], step), np.arange(0, bounds[1], step)
+    for i in x:
+        for j in y:
+            p = np.array([i, j])
+            nearest, dist = kd.find_nearest_neighbor(p)
+            nearest = tuple(nearest)
+            weight = pd[int(i)][int(j)]
+            centroid = siteCentroids[nearest]
+            centroid.x += weight * i
+            centroid.y += weight * j
+            siteCentroids[nearest] = centroid
+            if nearest in siteIntensities:
+                siteIntensities[nearest] += weight
+            else:
+                siteIntensities[nearest] = weight
+            if nearest in sitePoints:
+                sitePoints[nearest] += 1
+            else:
+                sitePoints[nearest] = 1
     centroids = np.zeros((len(sites), 2), dtype=np.float64)
     densities = np.zeros(len(sites))
     i = 0
@@ -44,5 +42,3 @@ def Centroids(sites, pd, bounds, step):
         densities[i] = siteIntensities[site] / sitePoints[site]
         i += 1
     return centroids, densities
-
-
