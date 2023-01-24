@@ -1,5 +1,9 @@
 import numpy as np 
-from Point2 import Point, sortByX, sortByY
+from Point import Point, sortByX, sortByY
+import sampling as sp
+import gray as gr
+import time
+
 class Rectangle:
     def __init__(self, min: Point, max: Point):
         self.min = min
@@ -73,9 +77,3 @@ def search(node : kdNode, target: Point, r: Rectangle, maxDistSqd: np.float64())
         distSqd = temp_distSqd
     return nearest, np.float64(distSqd)
         
-
-if __name__ == "__main__":
-    pts = [Point(2,3), Point(5,4), Point(9,6), Point(4,7), Point(8,1), Point(7,2)]
-    rectangle = Rectangle(Point(0,0), Point(10,10))
-    tree = makeKDTree(pts, rectangle)
-    print("Output of findNearest: ", tree.findNearest(Point(2,2)))
