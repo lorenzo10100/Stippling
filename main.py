@@ -1,4 +1,4 @@
-import sampB as sp 
+import samp as sp 
 import numpy as np
 import gray as gr
 import time 
@@ -7,11 +7,11 @@ import util as u
 import stip as st
 import cv2 as cv2
 
-inPath = 'data/images/coliseum.jpg'
+inPath = 'data/images/figura.png'
 nPoints = 2000
 threshold = 255
 resolution = 1
-iterations = 6
+iterations = 5
 rMin = 0.5
 rMax = 1.5
 
@@ -26,7 +26,7 @@ def main():
     gray = gr.gray(inPath)
     print('Converted!')
     print('Next step: sampling creation...')
-    for x in range(1, threshold,10):
+    for x in range(1, threshold, 10):
         print("Threshold:", x)
         points = sp.sampling(nPoints, gray, x, np.random.default_rng(seed=int(time.time())))
         print('Sampling created!')
