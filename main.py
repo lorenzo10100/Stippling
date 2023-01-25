@@ -7,13 +7,13 @@ import util as u
 import stip as st
 import cv2 as cv2
 
-inPath = 'data/images/figura.png'
-nPoints = 20000
+inPath = 'data/images/coliseum.jpg'
+nPoints = 2000
 threshold = 255
 resolution = 1
-iterations = 10
-rMin = 0.9
-rMax = 1.2
+iterations = 6
+rMin = 0.5
+rMax = 1.5
 
 
 def main():
@@ -26,33 +26,35 @@ def main():
     gray = gr.gray(inPath)
     print('Converted!')
     print('Next step: sampling creation...')
-    points = sp.sampling(nPoints, gray, threshold, np.random.default_rng(seed=int(time.time())))
-    print('Sampling created!')
-    print('Next step: PDF creation...')
-    pdf = pd.makePDF('data/gray_images/gray_' + inPath.split('/')[2])
-    print('PDF created successfully!')
-    step = 1/resolution
-    print('Next step: stippling...')
-    print('Stippling in progress... please be patient')
-    stipples, densities = st.Centroids(points, pdf, gray.shape, step)
-    for i in range(1, iterations):
-       print('Iteration', i)
-       stipples, densities = st.Centroids(stipples, pdf, gray.shape, step)
-    print('Stippling completed!')
-    print('Next step: normalize densities...')
-    print('Densities normalization in progress...')
-    radiuses = u.rescaleFloat64s(densities, rMin, rMax)
-    print('Densities normalized!')
-    print('Next step: drawing stippled image...')
-    stipple = cv2.imread(stippled)
-    print('Drawing stippled image in progress...')
-    for j, s in enumerate(stipples):
-        try:
-            stipple = cv2.circle(stipple, (np.uint64(s[1]), np.uint64(s[0])), int(radiuses[j]), (0, 0, 0), -1)
-        except:
-            pass
-    cv2.imwrite(stippled, stipple)
-    print('Stippled image drawn!')
+    for x in range(1, threshold,10):
+        print("Threshold:", x)
+        points = sp.sampling(nPoints, gray, x, np.random.default_rng(seed=int(time.time())))
+        print('Sampling created!')
+        print('Next step: PDF creation...')
+        pdf = pd.makePDF('data/gray_images/gray_' + inPath.split('/')[2])
+        print('PDF created successfully!')
+        step = 1/resolution
+        print('Next step: stippling...')
+        print('Stippling in progress... please be patient')
+        stipples, densities = st.Centroids(points, pdf, gray.shape, step)
+        for i in range(1, iterations):
+            print('Iteration', i)
+            stipples, densities = st.Centroids(stipples, pdf, gray.shape, step)
+        print('Stippling completed!')
+        print('Next step: normalize densities...')
+        print('Densities normalization in progress...')
+        radiuses = u.rescaleFloat64s(densities, rMin, rMax)
+        print('Densities normalized!')
+        print('Next step: drawing stippled image...')
+        stipple = cv2.imread(stippled)
+        print('Drawing stippled image in progress...')
+        for j, s in enumerate(stipples):
+            try:
+                stipple = cv2.circle(stipple, (np.uint64(s[1]), np.uint64(s[0])), int(radiuses[j]), (0, 0, 0), -1)
+            except:
+                pass
+        cv2.imwrite(stippled, stipple)
+        print('Stippled image drawn!')
     print('MAIN COMPLETED!')
 
 

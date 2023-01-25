@@ -15,12 +15,15 @@ def sampling(sample, gray, threshold, rng=np.random.default_rng()):
                 hist[intensity].append(Point(np.float64(x),np.float64(y)))
             else:
                 hist[intensity] = [Point(np.float64(x),np.float64(y))]
+
     roulette[0] = 256*len(hist[0])
     for i in range(1, len(roulette)):
         roulette[i] = roulette[i-1] + (256-i)*len(hist[np.uint8(i)])
+
     for i in range(len(pts)):
         ball = rng.integers(0, len(roulette)-1)
         bucket = np.uint8(np.searchsorted(roulette, ball))
+        print(ball)
         p = hist[bucket][rng.integers(0, len(hist[bucket]))]
         p.x += rng.random(dtype=np.float64)
         p.y += rng.random(dtype=np.float64)
