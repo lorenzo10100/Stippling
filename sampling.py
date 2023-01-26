@@ -1,33 +1,36 @@
-import numpy as np 
+import numpy as np
 from Point import Point
-import cv2 as cv
+
 
 def sampling(sample, gray, threshold, rng=np.random.default_rng()):
-    pts = [Point(0,0) for _ in range(sample)]
+    """
+    Funzione di sampling, che ritorna un array di intesita' di colori, in base al numero di pixel di quel colore
+    presenti nell'immagine.
+    @param sample: numero di punti
+    @param gray: immagine in scala di grigi
+    @param threshold: soglia di intensita' limite
+    @param rng: generatore random di valori
+    @return ndarray di punti 
+    """
+    pts = np.zeros([sample], dtype=(np.float64, 2))
     bounds = gray.shape
-    hist = dict()
-    roulette = np.zeros(threshold+1)
+    hist = {key: [] for key in range(0, 256)}
+    roulette = np.zeros(threshold + 1)
     for x in range(0, bounds[0]):
         for y in range(0, bounds[1]):
             intensity = np.uint8(gray[x][y])
-            if intensity <= threshold:
-                if intensity in hist:
-                    hist[intensity].append(Point(np.float64(x),np.float64(y)))
-                else:
-                    hist[intensity] = [Point(np.float64(x),np.float64(y))]
-    roulette[0] = 256*len(hist[0])
+            if intensity in hist:
+                hist[intensity].append(Point(np.float64(x), np.float64(y)))
+    roulette[0] = 256 * len(hist[0])
     for i in range(1, len(roulette)):
-        try:
-            roulette[i] = roulette[i-1] + (256-i)*len(hist[np.uint8(i)])
-        except:
-            roulette[i] = roulette[i -1]
+        roulette[i] = roulette[i - 1] + (256 - i) * len(hist[np.uint8(i)])
+
     for i in range(len(pts)):
-        ball = rng.integers(0, len(roulette)-1)
+        ball = rng.integers(0, len(roulette) - 1)
         bucket = np.uint8(np.searchsorted(roulette, ball))
-        p = hist[bucket][rng.integers(0, len(hist[bucket]))]
-        p.x += rng.random(dtype=np.float64)
-        p.y += rng.random(dtype=np.float64)
-        pts[i] = p
-    return pts      
-
-
+        if hist[bucket]:
+            p = hist[bucket][rng.integers(0, len(hist[bucket]))]
+            p.x += rng.random(dtype=np.float64)
+            p.y += rng.random(dtype=np.float64)
+            pts[i] = (p.x, p.y)
+    return pts

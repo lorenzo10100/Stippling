@@ -1,8 +1,14 @@
 import cv2 as cv
 import numpy as np
 
-#The following function is used to generate the PDF (probability density function) of a given image (gray)
-def makePDF(gray):
+
+def makePDF(gray: str):
+    """
+    Funzione che crea la funzione di densita', data un'immagine grigia in input
+    @param gray: Immagine grigia
+    @return ndarray di toni di colori 
+    """
+
     img = cv.imread(gray)
     bounds = img.shape
     pdf = np.zeros((bounds[0], bounds[1]), dtype=np.float64)
