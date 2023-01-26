@@ -4,7 +4,7 @@ from Point import Point
 def sampling(sample, gray, threshold, rng=np.random.default_rng()):
     pts = np.zeros([sample], dtype=(np.float64, 2))
     bounds = gray.shape
-    hist = {key : [] for key in range(0, threshold+1)}
+    hist = {key : [] for key in range(0, 256)}
     roulette = np.zeros(threshold+1)
     for x in range(0, bounds[0]):
         for y in range(0, bounds[1]):
